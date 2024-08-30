@@ -5,5 +5,3 @@ bin/
 cmake_install.cmake
 CMakeFiles/
 CMakeCache.txt
-
-src/"'"
