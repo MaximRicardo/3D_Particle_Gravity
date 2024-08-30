@@ -45,7 +45,7 @@ int main() {
         std::size_t n_particles = 3000;
         particles.reserve(n_particles);
 
-        std::array<float, 2> sphere_particles_fraction = {4.f/5.f, 1.f/5.f};
+        std::array<float, 2> sphere_particles_fraction = {2.f/3.f, 1.f/3.f};
         for (std::size_t n = 0; n < 2; n++) {
 
             Vectors::Vec3 center;
@@ -82,7 +82,6 @@ int main() {
         }
     }
 
-    //Mesh mesh = GenMeshCube(2.f, 2.f, 2.f);
     Mesh mesh = GenMeshSphere(1.f, 10, 10);
 
     Material mat_default = LoadMaterialDefault();
