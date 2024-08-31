@@ -3,9 +3,11 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <exception>
 #include <thread>
 #include <vector>
 #include <cmath>
+#include <string>
 
 #include "raylib.h"
 #include "vectors.hpp"
@@ -40,6 +42,8 @@ int main(int argc, char** argv) {
     unsigned screen_height = windowed_screen_height;
     InitWindow(screen_width, screen_height, "Gravity Sim");
 
+    SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
+
     Camera camera = {{0.f, 0.f, -100.f}, {0.f, 0.f, 100.f}, {0.f, 1.f, 0.f}, 59.f, CAMERA_PERSPECTIVE};
     float camera_move_speed = 20.f;
 
@@ -49,7 +53,9 @@ int main(int argc, char** argv) {
         if (argc >= 2) {
             errno = 0;
             char* end_ptr = NULL;
+
             n_particles = std::strtoul(argv[1], &end_ptr, 10);
+
             if (errno != 0 && n_particles == 0) {
                 std::fprintf(stderr, "Error: Couldn't get number of particles: %s\n", strerror(errno));
                 return EXIT_FAILURE;
