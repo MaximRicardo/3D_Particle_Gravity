@@ -138,7 +138,11 @@ namespace BarnesHut {
             sub_nodes[i]->render();
         }
 
-        DrawCubeWires(position/mass, bounding_box.x_max-bounding_box.x_min, bounding_box.y_max-bounding_box.y_min, bounding_box.z_max-bounding_box.z_min, WHITE);
+        Vectors::Vec3 bounding_box_min = {bounding_box.x_min, bounding_box.y_min, bounding_box.z_min};
+        Vectors::Vec3 bounding_box_max = {bounding_box.x_max, bounding_box.y_max, bounding_box.z_max};
+
+        Vectors::Vec3 node_center = bounding_box_min.lerp(bounding_box_max, 0.5f);
+        DrawCubeWires(node_center, bounding_box.x_max-bounding_box.x_min, bounding_box.y_max-bounding_box.y_min, bounding_box.z_max-bounding_box.z_min, WHITE);
 
     }
 

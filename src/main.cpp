@@ -109,7 +109,6 @@ int main(int argc, char** argv) {
         }
     }
 
-    //Mesh mesh = GenMeshCube(2.f, 2.f, 2.f);
     Mesh mesh = GenMeshSphere(1.f, 10, 10);
 
     Material mat_default = LoadMaterialDefault();
