@@ -1,7 +1,9 @@
 #pragma once
 
+#include <cstddef>
+
 #include "vectors.hpp"
-#include <raylib.h>
+#include "raylib.h"
 
 namespace Particle {
 
@@ -21,6 +23,8 @@ namespace Particle {
         void update(float delta_time);
         void collision(Particle &other);
         void draw(Mesh mesh, Material material);
+
+        std::size_t id;
 
     };
 

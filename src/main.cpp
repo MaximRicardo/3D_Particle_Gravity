@@ -11,7 +11,7 @@
 
 constexpr float G = 1.f;
 
-void simulate_particles(std::vector<Particle::Particle> &particles, std::size_t lower_limit, std::size_t upper_limit, const BarnesHut::BarnesHutTree &bh_tree) {
+void simulate_particles(std::vector<Particle::Particle> &particles, std::size_t lower_limit, std::size_t upper_limit, const BarnesHut::Tree &bh_tree) {
 
     for (std::size_t i = lower_limit; i <= upper_limit; i++) {
 
@@ -45,7 +45,7 @@ int main() {
         std::size_t n_particles = 3000;
         particles.reserve(n_particles);
 
-        std::array<float, 2> sphere_particles_fraction = {4.f/5.f, 1.f/5.f};
+        std::array<float, 2> sphere_particles_fraction = {2.f/3.f, 1.f/3.f};
         for (std::size_t n = 0; n < 2; n++) {
 
             Vectors::Vec3 center;
@@ -76,6 +76,7 @@ int main() {
                 particle.prev_acceleration = {0.f, 0.f, 0.f};
                 particle.mass = 10.f;
                 particle.radius = 1.f;
+                particle.id = particles.size();
 
                 particles.push_back(particle);
             }
@@ -149,7 +150,7 @@ int main() {
         ClearBackground(BLACK);
         BeginMode3D(camera);
 
-        BarnesHut::BarnesHutTree bh_tree;
+        BarnesHut::Tree bh_tree;
 
         //Construct the bh tree
         for (std::size_t i = 0; i < particles.size(); i++) {
@@ -158,7 +159,7 @@ int main() {
 
         if (IsKeyDown(KEY_SPACE)) bh_tree.render();
 
-        {
+        if (!IsKeyDown(KEY_C)) {
             std::size_t n_threads = n_simulation_threads;
             std::vector<std::thread> threads;
             threads.reserve(n_threads);
@@ -177,7 +178,7 @@ int main() {
         std::size_t n_particles_near_origin = 0;
         for (std::size_t i = 0; i < particles.size(); i++) {
 
-            particles[i].update(delta_time);
+            if (!IsKeyDown(KEY_C)) particles[i].update(delta_time);
 
             particles[i].draw(mesh, mat_default);
 

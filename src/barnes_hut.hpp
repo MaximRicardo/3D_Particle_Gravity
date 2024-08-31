@@ -18,18 +18,18 @@ namespace BarnesHut {
     constexpr std::size_t bottom_back_right_idx = 7;
 
     //Assumed to be axis aligned
-    class BarnesHutBoundingBox {
+    class Box {
 
     public:
         float x_min, y_min, z_min;
         float x_max, y_max, z_max;
 
         bool is_point_inside(const Vectors::Vec3 &p) const;
-        bool overlaps(const BarnesHutBoundingBox &box) const;
+        bool overlaps(const Box &box) const;
 
     };
 
-    class BarnesHutNode {
+    class Node {
 
         bool has_particle = false;  //Has the node recieved a particle thus far?
         bool has_sub_nodes = false; //Does the node have any allocated sub nodes?
@@ -41,16 +41,16 @@ namespace BarnesHut {
         Vectors::Vec3 position = {0.f, 0.f, 0.f}; //Weighted by the mass of every particle within the node
         float mass = 0.f;
 
-        BarnesHutBoundingBox bounding_box;
+        Box bounding_box;
 
-        std::array<BarnesHutBoundingBox, 8> create_sub_node_boxes() const;
+        std::array<Box, 8> create_sub_node_boxes() const;
 
     public:
 
         //A 3D barnes hut tree is an octtree
-        std::array< std::unique_ptr<BarnesHutNode>, 8 > sub_nodes;
+        std::array< std::unique_ptr<Node>, 8 > sub_nodes;
 
-        inline BarnesHutNode() {
+        inline Node() {
             for (std::size_t i = 0; i < sub_nodes.size(); i++) sub_nodes[i] = nullptr;
         }
         
@@ -59,13 +59,13 @@ namespace BarnesHut {
 
         void render() const;
 
-        friend class BarnesHutTree;
+        friend class Tree;
 
     };
 
-    class BarnesHutTree {
+    class Tree {
 
-        std::unique_ptr<BarnesHutNode> root_node = nullptr;
+        std::unique_ptr<Node> root_node = nullptr;
 
     public:
 

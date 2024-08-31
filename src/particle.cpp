@@ -49,7 +49,7 @@ namespace Particle {
         if (this_d > 0.f) {
             velocity = velocity - n*this_d;
 
-            other.velocity = other.velocity + n*this_d/1.1f;
+            other.velocity = other.velocity + (n*this_d/1.1f)*mass/other.mass;
         }
 
     }

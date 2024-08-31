@@ -10,10 +10,10 @@
 
 namespace BarnesHut {
 
-    void BarnesHutTree::insert_particle(const Particle::Particle &particle) {
+    void Tree::insert_particle(const Particle::Particle &particle) {
 
         if (root_node == nullptr) {
-            root_node = std::make_unique<BarnesHutNode>();
+            root_node = std::make_unique<Node>();
             
             root_node->bounding_box.x_min = -5000.f;
             root_node->bounding_box.x_max = 5000.f;
@@ -29,7 +29,7 @@ namespace BarnesHut {
 
     }
     
-    void BarnesHutTree::apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const {
+    void Tree::apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const {
 
         if (root_node == nullptr) return;
 
@@ -37,7 +37,7 @@ namespace BarnesHut {
 
     }
     
-    void BarnesHutTree::render() const {
+    void Tree::render() const {
 
         if (root_node == nullptr) return;
 
@@ -45,7 +45,7 @@ namespace BarnesHut {
 
     }
 
-    void BarnesHutNode::insert_particle(const Particle::Particle &particle) {
+    void Node::insert_particle(const Particle::Particle &particle) {
 
         //Add the particle to the total mass and center of mass
         mass += particle.mass;
@@ -59,7 +59,7 @@ namespace BarnesHut {
         else if (particle.position.dist(first_particle.position) < 0.001f) return;
 
         //Else, create every sub node's bounding box to check the particle against
-        std::array<BarnesHutBoundingBox, 8> sub_boxes = create_sub_node_boxes();
+        std::array<Box, 8> sub_boxes = create_sub_node_boxes();
 
         //Check which box the particle is within
         std::size_t point_box_idx = std::numeric_limits<std::size_t>::max();
@@ -75,7 +75,7 @@ namespace BarnesHut {
         
         if (sub_nodes[point_box_idx] == nullptr) {
             has_sub_nodes = true;
-            sub_nodes[point_box_idx] = std::make_unique<BarnesHutNode>();
+            sub_nodes[point_box_idx] = std::make_unique<Node>();
             sub_nodes[point_box_idx]->bounding_box = sub_boxes[point_box_idx];
         }
 
@@ -95,7 +95,7 @@ namespace BarnesHut {
         assert(point_box_idx != std::numeric_limits<std::size_t>::max());
 
         if (sub_nodes[point_box_idx] == nullptr) {
-            sub_nodes[point_box_idx] = std::make_unique<BarnesHutNode>();
+            sub_nodes[point_box_idx] = std::make_unique<Node>();
             sub_nodes[point_box_idx]->bounding_box = sub_boxes[point_box_idx];
         }
 
@@ -105,7 +105,7 @@ namespace BarnesHut {
 
     }
 
-    void BarnesHutNode::apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const {
+    void Node::apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const {
 
         Vectors::Vec3 center_of_mass = position/mass;
         float bounding_box_width = bounding_box.x_max - bounding_box.x_min; //Assumes the box to be equally wide in every axis
@@ -131,7 +131,7 @@ namespace BarnesHut {
 
     }
     
-    void BarnesHutNode::render() const {
+    void Node::render() const {
 
         for (std::size_t i = 0; i < sub_nodes.size(); i++) {
             if (sub_nodes[i] == nullptr) continue;

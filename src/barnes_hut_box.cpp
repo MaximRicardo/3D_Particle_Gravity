@@ -17,7 +17,7 @@ namespace {
 
 namespace BarnesHut {
 
-    bool BarnesHutBoundingBox::is_point_inside(const Vectors::Vec3 &p) const {
+    bool Box::is_point_inside(const Vectors::Vec3 &p) const {
 
         return x_min <= p.x && p.x <= x_max &&
                 y_min <= p.y && p.y <= y_max &&
@@ -25,7 +25,7 @@ namespace BarnesHut {
 
     }
     
-    bool BarnesHutBoundingBox::overlaps(const BarnesHutBoundingBox &box) const {
+    bool Box::overlaps(const Box &box) const {
 
         return x_min <= box.x_max && x_max >= box.x_min &&
             y_min < box.y_max && y_max > box.y_min &&
@@ -33,9 +33,9 @@ namespace BarnesHut {
 
     }
 
-    std::array<BarnesHutBoundingBox, 8> BarnesHutNode::create_sub_node_boxes() const {
+    std::array<Box, 8> Node::create_sub_node_boxes() const {
 
-        std::array<BarnesHutBoundingBox, 8> boxes;
+        std::array<Box, 8> boxes;
 
 
 
