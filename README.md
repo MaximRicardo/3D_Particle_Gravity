@@ -16,8 +16,11 @@ If you want to change how many particles are used, pass the number of particles 
 # Controls
 
 WASD:   Moving around
+
 Q:      Move up
+
 E:      Move down
+
 MOUSE:  Look around
 
 ENTER:  Toggle fullscreen, the windowed resolution is 1280x720. The fullscreen resolution is equal to the monitor's resolution
@@ -25,7 +28,9 @@ ENTER:  Toggle fullscreen, the windowed resolution is 1280x720. The fullscreen r
 SPACE:  See the Barnes-Hut tree, visualized via wireframe cubes representing each node of the oct-tree
 
 C:      Pause the simulation
+
 F:      Toggle 2x simulation speed
 
 R:      Spawn in a particle moving 25m/s in the x axis
+
 X:      Spawn in a cluster of 100 particles with no starting velocity
