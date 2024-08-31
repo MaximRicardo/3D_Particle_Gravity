@@ -77,7 +77,7 @@ int main() {
                 particle.mass = 10.f;
                 particle.radius = 1.f;
                 particle.id = particles.size();
-
+                
                 particles.push_back(particle);
             }
         }

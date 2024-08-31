@@ -56,11 +56,7 @@ namespace Particle {
 
     void Particle::draw(Mesh mesh, Material material) {
 
-        //Lerp between blue and red depending on acceleration
-        
-        Color color1 = BLUE;
-        Color color2 = RED;
-
+        //Lerp between color1 and color2 depending on acceleration
         Vectors::Vec3 color_v_1 = {static_cast<float>(color1.r), static_cast<float>(color1.g), static_cast<float>(color1.b)};
         Vectors::Vec3 color_v_2 = {static_cast<float>(color2.r), static_cast<float>(color2.g), static_cast<float>(color2.b)};
         float t = prev_acceleration.length() / 100.f;

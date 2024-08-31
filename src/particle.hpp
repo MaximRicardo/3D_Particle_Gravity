@@ -19,6 +19,9 @@ namespace Particle {
         float radius;
         float mass;
 
+        Color color1 = BLUE;
+        Color color2 = RED;
+
         void apply_gravity(const Particle &other, float G);
         void update(float delta_time);
         void collision(Particle &other);
