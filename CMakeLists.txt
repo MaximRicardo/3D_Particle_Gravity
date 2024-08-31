@@ -4,7 +4,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 project(gravity_sim VERSION 1.0)
 
-add_compile_options(-Wall -Wextra -Wpedantic -O3)
+add_compile_options(-Wall -Wextra -Wpedantic -std=c++14 -O3)
 
 # For debugging
 # add_compile_options(-Wall -Wextra -Wpedantic -ggdb3 -fsanitize=address)
