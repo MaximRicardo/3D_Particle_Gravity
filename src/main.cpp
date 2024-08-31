@@ -21,7 +21,7 @@ void simulate_particles(std::vector<Particle::Particle> &particles, std::size_t 
         bh_tree.apply_gravity(particles.data(), i, particles.size(), G);
 
         for (std::size_t j = 0; j < particles.size(); j++) {
-            if (i == j) continue;
+            if (i == j || particles[i].position.dist(particles[j].position) > particles[i].radius+particles[j].radius) continue;
             particles[i].collision(particles[j]);
         }
 
@@ -170,6 +170,7 @@ int main(int argc, char** argv) {
             new_particle.prev_acceleration = {0.f, 0.f, 0.f};
             new_particle.radius = 1.f;
             new_particle.mass = 10.f;
+            new_particle.id = particles.size();
 
             particles.push_back(new_particle);
         }
@@ -200,6 +201,7 @@ int main(int argc, char** argv) {
                 new_particle.prev_acceleration = {0.f, 0.f, 0.f};
                 new_particle.radius = 1.f;
                 new_particle.mass = 10.f;
+                new_particle.id = particles.size();
 
                 particles.push_back(new_particle);
             }

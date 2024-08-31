@@ -10,7 +10,7 @@
 
 namespace BarnesHut {
 
-    void Tree::insert_particle(const Particle::Particle &particle) {
+    void Tree::insert_particle(Particle::Particle &particle) {
 
         if (root_node == nullptr) {
             root_node = std::make_unique<Node>();
@@ -45,7 +45,7 @@ namespace BarnesHut {
 
     }
 
-    void Node::insert_particle(const Particle::Particle &particle) {
+    void Node::insert_particle(Particle::Particle &particle) {
 
         //Add the particle to the total mass and center of mass
         mass += particle.mass;
@@ -53,10 +53,10 @@ namespace BarnesHut {
 
         if (!has_particle) {
             has_particle = true;
-            first_particle = particle;
+            first_particle = &particle;
             return;
         }
-        else if (particle.position.dist(first_particle.position) < 0.001f) return;
+        else if (particle.position.dist(first_particle->position) < 0.001f) return;
 
         //Else, create every sub node's bounding box to check the particle against
         std::array<Box, 8> sub_boxes = create_sub_node_boxes();
@@ -87,7 +87,7 @@ namespace BarnesHut {
         //Do the same with the first particle, to re insert it into one of the sub nodes
         point_box_idx = std::numeric_limits<std::size_t>::max();
         for (std::size_t i = 0; i < sub_boxes.size(); i++) {
-            if (sub_boxes[i].is_point_inside(first_particle.position)) {
+            if (sub_boxes[i].is_point_inside(first_particle->position)) {
                 point_box_idx = i;
                 break;
             }
@@ -99,7 +99,7 @@ namespace BarnesHut {
             sub_nodes[point_box_idx]->bounding_box = sub_boxes[point_box_idx];
         }
 
-        sub_nodes[point_box_idx]->insert_particle(first_particle);
+        sub_nodes[point_box_idx]->insert_particle(*first_particle);
         
         reinserted_first_particle = true;
 

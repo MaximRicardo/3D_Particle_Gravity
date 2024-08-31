@@ -35,7 +35,7 @@ namespace BarnesHut {
         bool has_sub_nodes = false; //Does the node have any allocated sub nodes?
         
         //The first particle to be inserted into the node. Important for when a second particle gets inserted, since then the first one must be re-inserted
-        Particle::Particle first_particle;
+        Particle::Particle *first_particle;
         bool reinserted_first_particle = false; //Has the first particle been re-inserted yet?
         
         Vectors::Vec3 position = {0.f, 0.f, 0.f}; //Weighted by the mass of every particle within the node
@@ -54,9 +54,9 @@ namespace BarnesHut {
             for (std::size_t i = 0; i < sub_nodes.size(); i++) sub_nodes[i] = nullptr;
         }
         
-        void insert_particle(const Particle::Particle &particle);
+        void insert_particle(Particle::Particle &particle);
         void apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const;
-
+        
         void render() const;
 
         friend class Tree;
@@ -69,7 +69,7 @@ namespace BarnesHut {
 
     public:
 
-        void insert_particle(const Particle::Particle &particle);
+        void insert_particle(Particle::Particle &particle);
         void apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const;
 
         void render() const;        
