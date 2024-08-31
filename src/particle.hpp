@@ -22,6 +22,8 @@ namespace Particle {
         Color color1 = BLUE;
         Color color2 = RED;
 
+        std::size_t counter = 0;
+
         void apply_gravity(const Particle &other, float G);
         void update(float delta_time);
         void collision(Particle &other);

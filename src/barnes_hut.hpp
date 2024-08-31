@@ -2,6 +2,7 @@
 
 #include <array>
 #include <memory>
+#include <vector>
 
 #include "particle.hpp"
 #include "vectors.hpp"
@@ -25,6 +26,7 @@ namespace BarnesHut {
         float x_max, y_max, z_max;
 
         bool is_point_inside(const Vectors::Vec3 &p) const;
+        bool is_particle_maybe_inside(const Particle::Particle &particle) const;
         bool overlaps(const Box &box) const;
 
     };
@@ -56,6 +58,8 @@ namespace BarnesHut {
         
         void insert_particle(Particle::Particle &particle);
         void apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const;
+
+        void query(std::vector<Particle::Particle*> &found, const Box &range) const;
         
         void render() const;
 
@@ -71,6 +75,8 @@ namespace BarnesHut {
 
         void insert_particle(Particle::Particle &particle);
         void apply_gravity(Particle::Particle *const particles, std::size_t particle_idx, std::size_t n_particles, float G) const;
+
+        std::vector<Particle::Particle*> query(const Box &range) const;
 
         void render() const;        
 

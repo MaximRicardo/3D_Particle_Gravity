@@ -20,8 +20,37 @@ void simulate_particles(std::vector<Particle::Particle> &particles, std::size_t 
 
         bh_tree.apply_gravity(particles.data(), i, particles.size(), G);
 
+        /*
+        //Barnes Hut algorithm for collision. For some reason doesn't work, planets start moving in -x, +y, +z direction (right, top, front)
+
+        BarnesHut::Box range;
+
+        range.x_min = particles[i].position.x - particles[i].radius*2.f;
+        range.y_min = particles[i].position.y - particles[i].radius*2.f;
+        range.z_min = particles[i].position.z - particles[i].radius*2.f;
+        
+        range.x_max = particles[i].position.x + particles[i].radius*2.f;
+        range.y_max = particles[i].position.y + particles[i].radius*2.f;
+        range.z_max = particles[i].position.z + particles[i].radius*2.f;
+
+        std::vector<std::size_t> count(particles.size(), 0);
+
+        std::vector<Particle::Particle*> found = bh_tree.query(range);
+        for (auto particle_ptr : found) {
+            if (particles[i].id == particle_ptr->id) continue;            
+            if (particles[i].position.dist(particle_ptr->position) > particles[i].radius+particle_ptr->radius) continue;
+
+            ++count[particle_ptr->id];
+
+            if (count[particle_ptr->id] > 1) std::printf("aaaaaaaaaaa\n");
+
+            particles[i].collision(*particle_ptr);
+        }*/
+
+        //Regular collision algorithm. Way slower but atleast it works
         for (std::size_t j = 0; j < particles.size(); j++) {
             if (i == j || particles[i].position.dist(particles[j].position) > particles[i].radius+particles[j].radius) continue;
+            //if (std::find(std::begin(found), std::end(found), &particles[j]) != std::end(found)) std::printf("asdfsdfasdf\n");
             particles[i].collision(particles[j]);
         }
 

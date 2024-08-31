@@ -44,6 +44,17 @@ namespace BarnesHut {
         root_node->render();
 
     }
+    
+    std::vector<Particle::Particle*> Tree::query(const Box &range) const {
+
+        if (root_node == nullptr) return {};
+
+        std::vector<Particle::Particle*> found;
+        root_node->query(found, range);
+
+        return found;
+
+    }
 
     void Node::insert_particle(Particle::Particle &particle) {
 
@@ -143,6 +154,26 @@ namespace BarnesHut {
 
         Vectors::Vec3 node_center = bounding_box_min.lerp(bounding_box_max, 0.5f);
         DrawCubeWires(node_center, bounding_box.x_max-bounding_box.x_min, bounding_box.y_max-bounding_box.y_min, bounding_box.z_max-bounding_box.z_min, WHITE);
+
+    }
+    
+    void Node::query(std::vector<Particle::Particle*> &found, const Box &range) const {
+
+        if (!bounding_box.overlaps(range)) return;
+
+        if (!reinserted_first_particle && range.is_particle_maybe_inside(*first_particle)) found.push_back(first_particle);
+
+        if (found.size() % 2 == 0) {
+            for (std::size_t i = 0; i < sub_nodes.size(); i++) {
+                if (sub_nodes[i] != nullptr) sub_nodes[i]->query(found, range);
+            }
+        }
+        else {
+            for (std::size_t i = sub_nodes.size()-1; i >= 0; i--) {
+                if (sub_nodes[i] != nullptr) sub_nodes[i]->query(found, range);
+                if (i == 0) break;
+            }
+        }
 
     }
 

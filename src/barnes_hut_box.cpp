@@ -25,6 +25,18 @@ namespace BarnesHut {
 
     }
     
+    bool Box::is_particle_maybe_inside(const Particle::Particle &particle) const {
+
+        Vectors::Vec3 box_center;
+        box_center.x = midpoint(x_min, x_max);
+        box_center.y = midpoint(y_min, y_max);
+        box_center.z = midpoint(z_min, z_max);
+
+        float box_width = x_max-x_min;
+        return particle.position.dist(box_center) <= box_width+particle.radius;
+        
+    }
+    
     bool Box::overlaps(const Box &box) const {
 
         return x_min <= box.x_max && x_max >= box.x_min &&
