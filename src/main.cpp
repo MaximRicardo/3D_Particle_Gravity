@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
             new_particle.acceleration = {0.f, 0.f, 0.f};
             new_particle.prev_acceleration = {0.f, 0.f, 0.f};
             new_particle.radius = 1.f;
-            new_particle.mass = 1000.f;
+            new_particle.mass = 10.f;
 
             particles.push_back(new_particle);
         }
