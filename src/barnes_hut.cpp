@@ -111,8 +111,8 @@ namespace BarnesHut {
         float bounding_box_width = bounding_box.x_max - bounding_box.x_min; //Assumes the box to be equally wide in every axis
 
         float ratio = bounding_box_width / particles[particle_idx].position.dist(center_of_mass);
-        if (ratio <= 0.5f || !has_sub_nodes) {
-            //If the ratio is <= 0.5, the node is sufficiently far away, and will be simplified to only be a point with pos = center_of_mass, and mass = mass
+        if (ratio <= 1.f || !has_sub_nodes) {
+            //If the ratio is <= 1, the node is sufficiently far away, and will be simplified to only be a point with pos = center_of_mass, and mass = mass
             //Also, if the node has no sub nodes, then there is no option but to use it's COM and mass
             
             if (center_of_mass.dist(particles[particle_idx].position) < 0.1f) return;

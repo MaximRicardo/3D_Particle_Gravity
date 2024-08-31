@@ -9,7 +9,9 @@ The simulation is done entirely on the cpu, and no instancing is used. The numbe
 This typically means half of your cpu's cores. The number of threads used for the simulation will be displayed in the terminal.
 The Barnes-Hut algorithm is used to speed up the simulation, and you can view the tree by holding down Space.
 
-To compile, all you need is raylib and a c++14-compatible compiler. The code itself should be platform independent, however i have only run it on Linux Mint.
+To compile, all you need is raylib and a c++14 compatible compiler. The code itself should be platform independent, however i have only tested the code on Linux Mint.
+
+If you want to change how many particles are used, pass the number of particles as the first command line argument.
 
 # Controls
 
@@ -23,5 +25,6 @@ ENTER:  Toggle fullscreen, the windowed resolution is 1280x720. The fullscreen r
 SPACE:  See the Barnes-Hut tree, visualized via wireframe cubes representing each node of the oct-tree
 
 C:      Pause the simulation
+F:      Toggle 2x simulation speed
 
 R:      Spawn in a particle moving 25m/s in the x axis

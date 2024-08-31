@@ -1,5 +1,8 @@
 #include <array>
+#include <cerrno>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <thread>
 #include <vector>
 #include <cmath>
@@ -26,7 +29,7 @@ void simulate_particles(std::vector<Particle::Particle> &particles, std::size_t 
 
 }
 
-int main() {
+int main(int argc, char** argv) {
 
     SetTraceLogLevel(TraceLogLevel::LOG_ERROR);
 
@@ -43,6 +46,25 @@ int main() {
     std::vector<Particle::Particle> particles;
     {
         std::size_t n_particles = 3000;
+        if (argc >= 2) {
+            errno = 0;
+            char* end_ptr = NULL;
+            n_particles = std::strtoul(argv[1], &end_ptr, 10);
+            if (errno != 0 && n_particles == 0) {
+                std::fprintf(stderr, "Error: Couldn't get number of particles: %s\n", strerror(errno));
+                return EXIT_FAILURE;
+            }
+            else if (end_ptr == argv[1]) {
+                std::fprintf(stderr, "Error: Number of particles is invalid (No digits found)!\n");
+                return EXIT_FAILURE;
+            }
+            else if (n_particles == 0) {
+                std::fprintf(stderr, "Error: Cannot use 0 particles!\n");
+                return EXIT_FAILURE;
+            }
+        }
+
+        std::printf("Using %zu particles.\n", n_particles);
         particles.reserve(n_particles);
 
         std::array<float, 2> sphere_particles_fraction = {2.f/3.f, 1.f/3.f};
@@ -96,6 +118,8 @@ int main() {
     
     std::printf("Simulation using %zu threads.\n", n_simulation_threads);
 
+    float simulation_speed = 1.f;
+
     DisableCursor();
 
     while (!WindowShouldClose()) {
@@ -141,9 +165,18 @@ int main() {
             new_particle.acceleration = {0.f, 0.f, 0.f};
             new_particle.prev_acceleration = {0.f, 0.f, 0.f};
             new_particle.radius = 1.f;
-            new_particle.mass = 10.f;
+            new_particle.mass = 1000.f;
 
             particles.push_back(new_particle);
+        }
+
+        if (IsKeyPressed(KEY_F)) {
+            if (simulation_speed == 1.f) {
+                simulation_speed = 2.f;
+            }
+            else {
+                simulation_speed = 1.f;
+            }
         }
 
         BeginDrawing();
@@ -178,7 +211,7 @@ int main() {
         std::size_t n_particles_near_origin = 0;
         for (std::size_t i = 0; i < particles.size(); i++) {
 
-            if (!IsKeyDown(KEY_C)) particles[i].update(delta_time);
+            if (!IsKeyDown(KEY_C)) particles[i].update(delta_time*simulation_speed);
 
             particles[i].draw(mesh, mat_default);
 
@@ -191,6 +224,7 @@ int main() {
 
         DrawFPS(10, 10);
         DrawText(TextFormat("%zu/%zu Particles within 500 units of the origin.", n_particles_near_origin, particles.size()), 10, 50, 20, WHITE);
+        DrawText(TextFormat("Simulation running at %fx speed\n", simulation_speed), 10, 70, 20, WHITE);
         EndDrawing();
 
     }
