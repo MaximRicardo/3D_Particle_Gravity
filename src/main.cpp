@@ -3,11 +3,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <exception>
 #include <thread>
 #include <vector>
 #include <cmath>
-#include <string>
 
 #include "raylib.h"
 #include "vectors.hpp"
@@ -174,6 +172,37 @@ int main(int argc, char** argv) {
             new_particle.mass = 10.f;
 
             particles.push_back(new_particle);
+        }
+
+        if (IsKeyPressed(KEY_X)) {
+            float theta = 0.f;  //Azimuthal angle
+            float phi = 0.f;  //Altitude angle
+            float dist = 5.f;
+            float dist_inc = 5.f;
+            for (std::size_t i = 0; i < 100; i++) {
+                Particle::Particle new_particle;
+
+                new_particle.position = {std::sin(phi)*std::cos(theta)*dist, std::sin(phi)*std::sin(theta)*dist, std::cos(phi)*dist}; //Spherical to cartesian coordinates
+                Vectors::Vec3 cam_pos = {camera.position.x, camera.position.y, camera.position.z};
+                new_particle.position = new_particle.position + cam_pos;
+                theta += 0.5f;
+                if (theta >= 2.f*PI) {
+                    phi += 0.5f;
+                    theta -= 2.f*PI;
+                }
+                if (phi >= 2.f*PI) {
+                    dist += dist_inc;
+                    phi -= 2.f*PI;
+                }
+
+                new_particle.velocity = {0.f, 0.f, 0.f};
+                new_particle.acceleration = {0.f, 0.f, 0.f};
+                new_particle.prev_acceleration = {0.f, 0.f, 0.f};
+                new_particle.radius = 1.f;
+                new_particle.mass = 10.f;
+
+                particles.push_back(new_particle);
+            }
         }
 
         if (IsKeyPressed(KEY_F)) {

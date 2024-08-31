@@ -28,3 +28,4 @@ C:      Pause the simulation
 F:      Toggle 2x simulation speed
 
 R:      Spawn in a particle moving 25m/s in the x axis
+X:      Spawn in a cluster of 100 particles with no starting velocity
